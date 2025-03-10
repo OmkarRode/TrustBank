@@ -153,6 +153,11 @@
             const bank = "CT";
             const mintues = String(new Date().getMinutes()).padStart(2, '0');
             const receiptNo = (bank+name.substring(0, 2) + date+mintues).toUpperCase().slice(0, 10);
+
+            if (!name || !amount || !date || !receiptType || !paymentMethod) {
+                alert("Please fill in all mandatory fields.");
+                return;
+            }
             
             document.getElementById("r_receiptNo").innerText = receiptNo;
             document.getElementById("r_type").innerText = document.getElementById("receiptType").value;
