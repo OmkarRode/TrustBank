@@ -179,7 +179,7 @@
             html2canvas(document.getElementById("receipt"), {backgroundColor: "#ffffff"}).then(canvas => {
                 let link = document.createElement("a");
                 link.href = canvas.toDataURL("image/jpeg");
-                link.download = `${name}_${date}.jpg`;
+                link.download = "cbt_recipt.jpg";
                 link.click();
             });
         }
