@@ -150,13 +150,11 @@
         function generateReceipt() {
             const name = document.getElementById("name").value;
             const date = document.getElementById("date").value.replace(/-/g, "").slice(-4);
-            const amount = document.getElementById("r_amount").value;
-            const receiver = document.getElementById("r_receiver").value;
             const bank = "CT";
             const mintues = String(new Date().getMinutes()).padStart(2, '0');
             const receiptNo = (bank+name.substring(0, 2) + date+mintues).toUpperCase().slice(0, 10);
 
-            if (!name || !amount || !date || !receiver || !receiptType || !paymentMethod) {
+            if (!name || !amount || !receiptType || !paymentMethod) {
                 alert("Please fill in all mandatory fields.");
                 return;
             }
