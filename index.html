@@ -94,7 +94,7 @@
     <form id="receiptForm" class="mx-auto w-100 w-md-50">
         <div class="mb-3">
             <label class="form-label">Receipt Type:</label>
-            <select id="receiptType" class="form-select">
+            <select id="receiptType" class="form-select" onchange="toggleMonthSelection()">
                 <option value="MONTHLY SAVING RECEIPT">Monthly Saving Receipt</option>
                 <option value="WEEKLY SAVING RECEIPT">Weekly Saving Receipt</option>
                 <option value="INTEREST RECEIPT">Interest Paying Receipt</option>
@@ -109,6 +109,20 @@
             <label class="form-label">Amount:</label>
             <input type="number" id="amount" class="form-control" required>
         </div>
+        <div class="mb-3" id="monthSelection" style="display: none;">
+            <label class="form-label">Interest Month </label> 
+            <label class="form-check-label" style="color: red;">(*More than 1 month
+            <input class="form-check-input" type="checkbox" id="multipleMonths" onchange="toggleSecondMonth()"> ) </label>
+                    <div class="d-flex align-items-center gap-2">
+
+                        <input type="month" id="month" class="form-control" style="min-width: 150px;">
+                        <p class="mb-0" id="tolable" style="display: none;" >TO</p>
+                        <input type="month" id="month2" class="form-control" style="width: auto; display: none;">
+                    </div>
+        </div>
+
+        
+    <!-- Month selection code end -->
         <div class="mb-3">
             <label class="form-label">Date:</label>
             <input type="date" id="date" class="form-control" required>
@@ -125,7 +139,26 @@
         </div>
         <div class="mb-3">
             <label class="form-label">Receiver:</label>
-            <input type="text" id="receiver" class="form-control" value="Digambar Khorate" required>
+            <input type="text" id="receiver" class="form-control" value="Darshan Patil" required>
+        </div>
+        <!-- <div class="mb-3">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" id="paymentReceived"> Payment Received
+            </label>
+             -->
+
+             <div class="mb-3">
+                <label class="form-label">Payment Status:</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="paymentStatus" id="paymentReceived" value="received">
+                    <label class="form-check-label" for="paymentReceived">Payment Received</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="paymentStatus" id="paymentPending" value="pending">
+                    <label class="form-check-label" for="paymentPending">Pending</label>
+                </div>
+            </div>
+
         </div>
         <button type="button" class="btn btn-primary w-100" onclick="generateReceipt()">Generate Receipt</button>
     </form>
@@ -141,7 +174,13 @@
             <tr><th>Payment Method</th><td><span id="r_payment"></span></td></tr>
             <tr><th>Receiver</th><td><span id="r_receiver"></span></td></tr>
         </table>
-        <p class="receipt-footer">Thanks<br>Capital Trust Bank</p>
+        <p class="receipt-footer">
+            <!-- <img id="paymentStamp" src="./stamp.png" alt="Payment Received" style="display: none; width: 130px; position: absolute; left: 18px; bottom: 12px;"/> -->
+            <img id="paymentReceivedStamp" src="./received-stamp.png" alt="Payment Received" style="display: none; width: 130px; position: absolute; left: 10px; bottom: 10px;" />
+             <img id="paymentPendingStamp" src="./pending-stamp.png" alt="Pending" style="display: none; width: 120px; position: absolute; left: 10px; bottom: 8px;" />
+
+            Thanks<br>Capital Trust Bank
+        </p>
     </div>
 
     <button id="downloadBtn" class="btn btn-primary w-100 " style="display: none; margin-top: auto; " onclick="downloadReceipt()">Download Receipt</button>
@@ -173,6 +212,27 @@
             document.getElementById("receipt").style.display = "block";
             document.getElementById("receiptForm").style.display = "none";
             document.getElementById("downloadBtn").style.display = "block";
+
+            add_InterstMonth_Input();
+            addstamp();
+
+        }
+
+
+        function addstamp()
+        {
+        
+
+            const paymentStatus = document.querySelector('input[name="paymentStatus"]:checked');
+            const paymentReceived = paymentStatus && paymentStatus.value === "received";
+            const paymentPending = paymentStatus && paymentStatus.value === "pending";
+    
+            const receivedStamp = document.getElementById("paymentReceivedStamp");
+            const pendingStamp = document.getElementById("paymentPendingStamp");
+
+            receivedStamp.style.display = paymentReceived ? "block" : "none";
+            pendingStamp.style.display = paymentPending ? "block" : "none";
+
         }
 
         function downloadReceipt() {
@@ -183,6 +243,61 @@
                 link.click();
             });
         }
+
+
+        // interset month add option code
+        function toggleMonthSelection() {
+            const receiptType = document.getElementById('receiptType').value;
+            const monthSelection = document.getElementById('monthSelection');
+            monthSelection.style.display = receiptType === 'INTEREST RECEIPT' ? 'block' : 'none';
+
+            if ( receiptType === 'INTEREST RECEIPT')
+                {
+                    var table = document.querySelector(".receipt-table");
+                    var newRowHTML = '<tr><th>Interest Month</th><td><span id="r_interestMonth"></span></td></tr>';
+                    table.rows[0].insertAdjacentHTML('afterend', newRowHTML);
+                }
+
+        }
+
+        function toggleSecondMonth() {
+            const checkbox = document.getElementById('multipleMonths');
+            const secondMonth = document.getElementById('month2');
+            secondMonth.style.display = checkbox.checked ? 'block' : 'none';
+            document.getElementById('tolable').style.display = checkbox.checked ? 'block' : 'none';
+        }
+
+
+        function add_InterstMonth_Input()
+        {
+            const receiptType = document.getElementById('receiptType').value;
+
+            if ( receiptType === 'INTEREST RECEIPT')
+                {
+
+                    const month = document.getElementById("month").value;
+                    const month2 = document.getElementById("month2").value;
+
+                    // Function to format the month in "Mar-2025" format
+                    function formatMonth(dateString) {
+                        const date = new Date(dateString);
+                        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                        return `${monthNames[date.getMonth()]}-${date.getFullYear()}`;
+                    }
+
+                    // Format both months
+                    const formattedMonth = formatMonth(month);
+                    const formattedMonth2 = month2 ? formatMonth(month2) : null;
+
+                    // Create the interest month string
+                    const interestMonth = formattedMonth2 ? `${formattedMonth} to ${formattedMonth2}` : formattedMonth;
+
+                    // Set the formatted interest month in the element
+                    document.getElementById("r_interestMonth").innerText = interestMonth;
+                                }
+        }
+
+
     </script>
 </body>
 </html>
