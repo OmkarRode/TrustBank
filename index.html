@@ -22,7 +22,7 @@
             border: 3px solid black;
             padding: 15px;
             margin-top: 20px;
-            max-width: 350px;
+            max-width: 380px;
             margin-left: auto;
             margin-right: auto;
             /* box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); */
@@ -43,19 +43,35 @@
         }
 
         .bank-name {
-            font-size: 32px;
+            font-size: 26px;
             font-weight: bold;
             text-align: center;
             font-family: 'Georgia', serif;
             color: #3a5774;
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-bottom: 0px; 
         }
+        .address {
+            display: flex;
+            flex-direction: column;  /* Ensures address appears in 2 lines */
+            font-family: inherit;  /* Uses the same font as the bank name */
+            font-size: 12px;
+            /* font-weight: bold; */
+            text-align: center;
+            }
+            .address p {
+                margin: 0;  /* Removes default margin */
+                line-height: 1.5;  /* Reduces space between lines */
+                font-family: inherit;  /* Uses the same font as the bank name */
+            }
+
         .receipt-title {
             font-size: 18px;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            margin-top: 10px;
         }
         .receipt-table {
             width: 100%;
@@ -86,6 +102,8 @@
             display: inline-block;
             margin-bottom: 5px;
         }
+
+        
     </style>
 </head>
 <body class="container mt-4">
@@ -165,6 +183,10 @@
 
     <div id="receipt" class="mx-auto mt-4 p-3 text-start">
         <p class="bank-name">Capital Trust Bank</p>
+        <div class="address">
+            <p>LOWER PAREL, MUMBAI. MAHARASHTRA PINCODE-400013</p>
+            <p>MOBILE NO: 8805380729</p>
+        </div>
         <p class="receipt-title" id="r_type"></p>
         <p class="text-center"><strong>Receipt No:</strong> <span id="r_receiptNo"></span></p>
         <table class="receipt-table">
@@ -176,7 +198,7 @@
         </table>
         <p class="receipt-footer">
             <!-- <img id="paymentStamp" src="./stamp.png" alt="Payment Received" style="display: none; width: 130px; position: absolute; left: 18px; bottom: 12px;"/> -->
-            <img id="paymentReceivedStamp" src="./received-stamp.png" alt="Payment Received" style="display: none; width: 130px; position: absolute; left: 10px; bottom: 10px;" />
+            <img id="paymentReceivedStamp" src="./received-stamp.png" alt="Payment Received" style="display: none; width: 150px; position: absolute; left: 5px; bottom: -15px;" />
              <img id="paymentPendingStamp" src="./pending-stamp.png" alt="Pending" style="display: none; width: 120px; position: absolute; left: 10px; bottom: 8px;" />
 
             Thanks<br>Capital Trust Bank
